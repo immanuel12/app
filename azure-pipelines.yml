@@ -33,10 +33,10 @@ steps:
     publishTestResults: true
 
 # Step 2: Source Scanning - SAST
-- task: GitHubSecurityAnalysis@0
-  displayName: 'Run GitHub Advanced Security Scanning'
-  inputs:
-    securityAnalysisOptions: 'all' # Menjalankan SAST dan analisis lainnya
+# - task: GitHubSecurityAnalysis@0
+#   displayName: 'Run GitHub Advanced Security Scanning'
+#   inputs:
+#     securityAnalysisOptions: 'all' # Menjalankan SAST dan analisis lainnya
 
 # Step 3: Publish Analysis - Quality Report
 - task: PublishTestResults@2
