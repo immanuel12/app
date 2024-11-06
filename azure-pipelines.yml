@@ -21,12 +21,6 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'custom'
-    projects: '**/*.csproj'
-    custom: 'add MyApp.Tests package xunit.runner.visualstudio'
-
 # Step 3: Build the Project
 - task: DotNetCoreCLI@2
   displayName: 'Build Project'
