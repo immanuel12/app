@@ -25,12 +25,10 @@ steps:
     version: '7.x'  # Versi SDK .NET, sesuaikan dengan versi yang Anda gunakan
 
 - task: DotNetCoreCLI@2
-  displayName: 'Run Unit Tests'
   inputs:
     command: 'test'
     projects: 'MyApp/Tests/MyApp.Tests.csproj'
     arguments: '--configuration Release --collect "Code Coverage"'
-    publishTestResults: true
 
 # Step 2: Source Scanning - SAST
 # - task: GitHubSecurityAnalysis@0
