@@ -4,8 +4,7 @@ pr:
     include:
       - main
 
-pool: 
-  vmImage: 'agentpool'  # Gunakan 'windows-latest' sebagai pool agent
+pool: agentpool  # Gunakan 'windows-latest' sebagai pool agent
 
 steps:
 # Step 1: Install .NET SDK
