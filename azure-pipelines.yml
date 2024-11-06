@@ -3,32 +3,67 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
+# azure-pipelines.yml
 trigger:
-- main
+  branches:
+    include:
+      - main
 
-pool:
-  vmImage: 'windows-latest'
+pr:
+  branches:
+    include:
+      - main
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+pool: agentpool
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+# Step 1: Quality Check - Unit Testing
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK'
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: 'sdk'
+    version: '7.0'  # Versi SDK .NET, sesuaikan dengan versi yang Anda gunakan
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    projects: 'MyApp/Tests/MyApp.Tests.csproj'
+    arguments: '--configuration Release --collect "Code Coverage"'
+    publishTestResults: true
 
-- task: VSTest@2
+# Step 2: Source Scanning - SAST
+- task: GitHubSecurityAnalysis@0
+  displayName: 'Run GitHub Advanced Security Scanning'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    securityAnalysisOptions: 'all' # Menjalankan SAST dan analisis lainnya
+
+# Step 3: Publish Analysis - Quality Report
+- task: PublishTestResults@2
+  displayName: 'Publish Unit Test Results'
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TestResults/*.xml'
+    failTaskOnFailedTests: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Report'
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.cobertura.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage/'
+
+# Optional: Publish Quality Report (if using a report generator)
+- task: CopyFiles@2
+  displayName: 'Copy Quality Report Files'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/TestResults'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/QualityReport'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Quality Report Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/QualityReport'
+    ArtifactName: 'QualityReport'
+    publishLocation: 'Container'
