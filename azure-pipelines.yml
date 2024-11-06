@@ -25,7 +25,7 @@ steps:
   inputs:
     command: 'custom'
     projects: '**/*.csproj'
-    custom: 'dotnet add MyApp.Tests package xunit.runner.visualstudio'
+    custom: 'add MyApp.Tests package xunit.runner.visualstudio'
 
 # Step 3: Build the Project
 - task: DotNetCoreCLI@2
