@@ -22,7 +22,7 @@ steps:
   displayName: 'Install .NET SDK'
   inputs:
     packageType: 'sdk'
-    version: '7.0'  # Versi SDK .NET, sesuaikan dengan versi yang Anda gunakan
+    version: '7.x'  # Versi SDK .NET, sesuaikan dengan versi yang Anda gunakan
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Unit Tests'
