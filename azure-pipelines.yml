@@ -25,7 +25,7 @@ steps:
   displayName: 'Build Project'
   inputs:
     command: 'build'
-    projects: 'HelloWorldApp/HelloWorldApp.csproj'  # Proyek utama
+    projects: '**/HelloWorldApp/HelloWorldApp.csproj'  # Proyek utama
     arguments: '--configuration Release'
 
 - task: DotNetCoreCLI@2
