@@ -1,4 +1,3 @@
-# azure-pipelines.yml
 pr:
   branches:
     include:
@@ -19,14 +18,21 @@ steps:
   displayName: 'Restore Dependencies'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: '**/*.csproj'  # Mencakup semua file .csproj di seluruh subfolder
 
 # Step 3: Build the Project
 - task: DotNetCoreCLI@2
   displayName: 'Build Project'
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: 'HelloWorldApp/HelloWorldApp.csproj'  # Proyek utama
+    arguments: '--configuration Release'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Test Project'
+  inputs:
+    command: 'build'
+    projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
     arguments: '--configuration Release'
 
 # Step 4: Run Unit Tests with Code Coverage
@@ -34,7 +40,7 @@ steps:
   displayName: 'Run Unit Tests'
   inputs:
     command: 'test'
-    projects: 'MyApp/Tests/MyApp.Tests.csproj'
+    projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
     arguments: '--configuration Release --collect "Code Coverage" --logger trx'
     publishTestResults: true
 
