@@ -14,8 +14,11 @@
     </PackageReference>
   </ItemGroup>
 
+<<<<<<< HEAD
   <ItemGroup>
     <ProjectReference Include="MyApp.csproj" />
   </ItemGroup>
 
+=======
+>>>>>>> 114b96d74b70aae0413edffea4b5db61271ee18b
 </Project>
