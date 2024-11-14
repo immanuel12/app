@@ -61,14 +61,14 @@ steps:
     reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage/'
 
 # Optional: Publish Quality Report (if using a report generator)
-- task: CopyFiles@2
-  displayName: 'Copy Quality Report Files'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/TestResults'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/QualityReport'
+# - task: CopyFiles@2
+#   displayName: 'Copy Quality Report Files'
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)/TestResults'
+#     Contents: '**'
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)/QualityReport'
 
-- task: PublishBuildArtifacts@1
+# - task: PublishBuildArtifacts@1
   displayName: 'Publish Quality Report Artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/QualityReport'
